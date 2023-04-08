@@ -20,7 +20,4 @@ namespace eShopSolution.Data.Configurations
         }
     }
 
-
-
-
 }
