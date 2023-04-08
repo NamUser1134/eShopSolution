@@ -19,4 +19,8 @@ namespace eShopSolution.Data.Configurations
             builder.Property(x => x.Dob).IsRequired();
         }
     }
+
+
+
+
 }
