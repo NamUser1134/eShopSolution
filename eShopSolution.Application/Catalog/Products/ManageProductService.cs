@@ -4,7 +4,6 @@ using eShopSolution.Data.EF;
 using eShopSolution.Data.Entities;
 using eShopSolution.Utilities.Exceptions;
 using eShopSolution.ViewModels.Catalog.Products;
-using eShopSolution.ViewModels.Catalog.Products.Manage;
 using eShopSolution.ViewModels.Common;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
@@ -106,7 +105,7 @@ namespace eShopSolution.Application.Catalog.Products
             return await _context.SaveChangesAsync();
         }
 
-        public async Task<PagedResult<ProductViewModel>> GetAllPaging(GetProductPagingRequest request)
+        public async Task<PagedResult<ProductViewModel>> GetAllPaging(GetManageProductPagingRequest request)
         {
            // linq hoac lamda
 
@@ -123,9 +122,9 @@ namespace eShopSolution.Application.Catalog.Products
                 query = query.Where(x => x.pt.Name.Contains(request.Keyword));
             }
               // kiem tra CategoryId count 
-            if(request.CategoryId.Count > 0)
+            if(request.CategoryIds.Count > 0)
             {
-                query = query.Where(p => request.CategoryId.Contains(p.pic.CategoryId));
+                query = query.Where(p => request.CategoryIds.Contains(p.pic.CategoryId));
             }
 
             // Buoc 3 "Paging"
