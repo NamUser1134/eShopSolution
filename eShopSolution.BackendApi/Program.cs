@@ -1,4 +1,5 @@
 ﻿using eShopSolution.Application.Catalog.Products;
+using eShopSolution.Application.Common;
 using eShopSolution.Data.EF;
 using eShopSolution.Utilities.Constants;
 using Microsoft.EntityFrameworkCore;
@@ -16,7 +17,9 @@ builder.Services.AddDbContext<EShopDbContext>(options => options.UseSqlServer(
     ));
 
 //Declare DI Khai bao 
+builder.Services.AddTransient<IStorageService, FileStorageService>();
 builder.Services.AddTransient<IPublicProductService, PublicProductService>();
+builder.Services.AddTransient<IManageProductService, ManageProductService>();
 builder.Services.AddSwaggerGen( c => 
     {
         c.SwaggerDoc("v1", new OpenApiInfo { Title ="Swapper eShop Solution",Version ="v1"});
