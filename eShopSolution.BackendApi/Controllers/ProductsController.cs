@@ -1,6 +1,7 @@
 ﻿using eShopSolution.Application.Catalog.ProductImages;
 using eShopSolution.Application.Catalog.Products;
 using eShopSolution.ViewModels.Catalog.Products;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,6 +10,7 @@ namespace eShopSolution.BackendApi.Controllers
     // api/product
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class ProductsController : ControllerBase
     {
         private readonly IPublicProductService _publicProductService;
