@@ -11,9 +11,11 @@ namespace eShopSolution.BackendApi.Controllers
     public class UsersController : ControllerBase
     {
         private readonly IUserService _userService;
+       
         public UsersController(IUserService userService) 
         {
             _userService = userService;
+            
         }
         [HttpPost("authenticate")]
         [AllowAnonymous]
@@ -27,7 +29,7 @@ namespace eShopSolution.BackendApi.Controllers
             {
                 return BadRequest("Username or password is incorrect.");
             }
-            return Ok(new { token = resultToken });
+            return Ok(resultToken);
         }
 
         [HttpPost("register")]
