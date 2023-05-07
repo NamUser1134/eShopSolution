@@ -22,10 +22,26 @@ namespace eShopSolution.AdminApp.Controllers
             _userApiClient = userApiClient;
             _configuration = configuration;
         }
-        public IActionResult Index()
+      
+        public async Task<IActionResult> Index(string keyword="a",int pageIndex = 1 ,int pageSize = 10 )
+        
         {
+            var sessions = HttpContext.Session.GetString("Token");
 
-            return View();
+            if (sessions == null)
+            { 
+                return BadRequest();
+            }
+
+            var request = new GetUserPagingRequest()
+            {
+                BearerToken = sessions,
+                Keyword = keyword,
+                PageIndex = pageIndex,
+                PageSize = pageSize
+            };
+            var data = await _userApiClient.GetUsersPagings(request);
+            return View(data);
         }
         [HttpGet]
         public async Task<ActionResult> Login()
@@ -46,6 +62,7 @@ namespace eShopSolution.AdminApp.Controllers
                 ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(10),
                 IsPersistent = false
             };
+            HttpContext.Session.SetString("Token", token);
             await HttpContext.SignInAsync(
                 CookieAuthenticationDefaults.AuthenticationScheme,
                 userPrincipal, 
@@ -57,6 +74,7 @@ namespace eShopSolution.AdminApp.Controllers
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            HttpContext.Session.Remove("Token");
             return RedirectToAction("Login", "User");
         }
         private ClaimsPrincipal ValidateToken(string jwtToken)
