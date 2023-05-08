@@ -10,6 +10,7 @@ builder.Services.AddControllersWithViews()
 .AddRazorRuntimeCompilation()
 .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<LoginRequestValidator>());
 
+
 builder.Services.AddHttpClient();
 builder.Services.AddTransient<IUserApiClient, UserApiClient>();
 builder.Services.AddHttpClient();
@@ -18,6 +19,9 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
     options.LoginPath = "/User/Login/";
     options.AccessDeniedPath = "/Account/Forbidden/";
 
+});
+builder.Services.AddSession(options => {
+    options.IdleTimeout = TimeSpan.FromMinutes(30);
 });
 var app = builder.Build();
 
@@ -36,7 +40,7 @@ app.UseAuthentication();
 app.UseRouting();
 
 app.UseAuthorization();
-
+app.UseSession();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");

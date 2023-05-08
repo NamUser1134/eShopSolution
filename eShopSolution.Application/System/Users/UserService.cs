@@ -1,6 +1,9 @@
 ﻿using eShopSolution.Data.Entities;
+using eShopSolution.ViewModels.Catalog.Products;
+using eShopSolution.ViewModels.Common;
 using eShopSolution.ViewModels.System.Users;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -56,6 +59,39 @@ namespace eShopSolution.Application.System.Users
                 signingCredentials: creds);
 
             return new JwtSecurityTokenHandler().WriteToken(token);
+        }
+
+        public async Task<PagedResult<UserVm>> GetUsersPaging(GetUserPagingRequest request)
+        {
+            var query = _userManager.Users;
+            if (!string.IsNullOrEmpty(request.Keyword))
+            {
+                query = query.Where(x => x.UserName.Contains(request.Keyword)
+                || x.PhoneNumber.Contains(request.Keyword));
+            }
+            // Buoc 3 "Paging"
+            int totalRow = await query.CountAsync(); // so trang hien tai search ra bao nhieu
+            var data = await query.Skip((request.PageIndex - 1) * request.PageSize)
+                .Take(request.PageSize)
+                .Select(x => new UserVm()
+                {
+                    Email = x.Email,
+                    PhoneNumber = x.PhoneNumber,
+                    UserName = x.UserName,
+                    FirstName = x.FirstName,
+                    Id = x.Id,
+                    LastName = x.LastName
+
+                }).ToListAsync();
+
+            // Buoc 4 "Select and projection"
+            var pageResult = new PagedResult<UserVm>()
+            {
+                TotalRecord = totalRow,
+                Items = data,
+
+            };
+            return pageResult;
         }
 
         public async Task<bool> Register(RegisterRequest request)
