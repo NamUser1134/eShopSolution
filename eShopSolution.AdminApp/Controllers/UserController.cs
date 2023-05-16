@@ -23,7 +23,7 @@ namespace eShopSolution.AdminApp.Controllers
             _configuration = configuration;
         }
       
-        public async Task<IActionResult> Index(string keyword="a",int pageIndex = 1 ,int pageSize = 1 )
+        public async Task<IActionResult> Index(string keyword="a",int pageIndex = 1 ,int pageSize = 10 )
         
         {          
             var request = new GetUserPagingRequest()
@@ -105,6 +105,28 @@ namespace eShopSolution.AdminApp.Controllers
             HttpContext.Session.Remove("Token");
             return RedirectToAction("Login", "User");
         }
-        
+
+        [HttpGet]
+        public IActionResult Delete(Guid id)
+        {
+
+            return View(new UserDeleteRequest()
+            {
+                Id = id
+            });
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> Delete(UserDeleteRequest request)
+        {
+            if (!ModelState.IsValid)
+                return View();
+            var result = await _userApiClient.Delete(request.Id);
+            if (result.IsSuccessed)
+                return RedirectToAction("Index");
+            ModelState.AddModelError("", result.Message); // troong truong if no i fail thi no request view với ModelState
+            return View(request);
+        }
+
     }
 }
