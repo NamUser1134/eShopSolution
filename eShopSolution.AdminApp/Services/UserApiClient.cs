@@ -72,7 +72,7 @@ namespace eShopSolution.AdminApp.Services
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", sessions);
 
             Dictionary<string, string> Params = new Dictionary<string, string>();
-            Params.Add( "Keyword", request.Keyword );
+            Params.Add( "Keyword", request.Keyword);
             Params.Add("PageIndex", request.PageIndex + string.Empty);
             Params.Add("PageSize", request.PageSize + string.Empty);
             var content = new FormUrlEncodedContent(Params);           
