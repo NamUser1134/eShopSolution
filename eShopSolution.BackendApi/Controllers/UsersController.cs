@@ -1,4 +1,5 @@
-﻿using eShopSolution.Application.System.Users;
+﻿using eShopSolution.Application.System.Languages;
+using eShopSolution.Application.System.Users;
 using eShopSolution.ViewModels.Catalog.Products;
 using eShopSolution.ViewModels.System.Users;
 using Microsoft.AspNetCore.Authorization;
@@ -13,7 +14,7 @@ namespace eShopSolution.BackendApi.Controllers
     public class UsersController : ControllerBase
     {
         private readonly IUserService _userService;
-       
+
         public UsersController(IUserService userService) 
         {
             _userService = userService;
