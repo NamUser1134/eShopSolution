@@ -81,7 +81,7 @@ namespace eShopSolution.BackendApi.Controllers
 
         //http://localhost/api/users/paging?pageIndex=1&pageSize=10&keyword=
         [HttpPost("paging")]    
-        public async Task<IActionResult> GetAllPaging([FromForm] string Keyword, [FromForm] string PageIndex, [FromForm] string PageSize)
+        public async Task<IActionResult> GetAllPaging([FromForm] string PageIndex, [FromForm] string PageSize, [FromForm] string? Keyword)
         {
              
             GetUserPagingRequest request = new GetUserPagingRequest() {
