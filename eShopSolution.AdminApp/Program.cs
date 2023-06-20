@@ -15,6 +15,7 @@ builder.Services.AddHttpClient();
 builder.Services.AddTransient<IUserApiClient, UserApiClient>();
 builder.Services.AddTransient<IRoleApiClient, RoleApiClient>();
 builder.Services.AddTransient<ILanguageApiClient, LanguageApiClient>();
+builder.Services.AddTransient<IProductApiClient, ProductApiClient>();
 builder.Services.AddHttpClient();
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options =>
 {
