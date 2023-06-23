@@ -65,37 +65,33 @@ namespace eShopSolution.Application.Catalog.Products
         {
             var product = new Product()
             {
-                // day la bang produc
                 Price = request.Price,
                 OriginalPrice = request.OriginalPrice,
                 Stock = request.Stock,
                 ViewCount = 0,
                 DateCreated = DateTime.Now,
-                // bang Translation
-                // them theo dang cha con 
                 ProductTranslations = new List<ProductTranslation>()
                 {
                     new ProductTranslation()
                     {
-                        Name = request.Name,
-                        Description= request.Description,
+                        Name =  request.Name,
+                        Description = request.Description,
                         Details = request.Details,
                         SeoDescription = request.SeoDescription,
                         SeoAlias = request.SeoAlias,
                         SeoTitle = request.SeoTitle,
-                        LanguageId = request.LanguageId,
+                        LanguageId = request.LanguageId
                     }
                 }
-
             };
-            // xu li save image
+            //Save image
             if (request.ThumbnailImage != null)
             {
                 product.ProductImages = new List<ProductImage>()
                 {
                     new ProductImage()
                     {
-                       Caption = "Thumbnail image",
+                        Caption = "Thumbnail image",
                         DateCreated = DateTime.Now,
                         FileSize = request.ThumbnailImage.Length,
                         ImagePath = await this.SaveFile(request.ThumbnailImage),
@@ -104,10 +100,9 @@ namespace eShopSolution.Application.Catalog.Products
                     }
                 };
             }
-
-           _context.Products.Add(product);
-           await _context.SaveChangesAsync();
-           return product.Id;
+            _context.Products.Add(product);
+            await _context.SaveChangesAsync();
+            return product.Id;
         }
 
         public async Task<int> Delete(int productId)
@@ -131,10 +126,10 @@ namespace eShopSolution.Application.Catalog.Products
             //Buoc 1 " Select join "
            var query = from p in _context.Products
                        join pt in _context.ProductTranslations on p.Id equals pt.ProductId
-                       join pic in _context.ProductInCategories on p.Id equals pic.ProductId
-                       join c in _context.Categories on pic.CategoryId equals c.Id
+                       //join pic in _context.ProductInCategories on p.Id equals pic.ProductId 
+                       //join c in _context.Categories on pic.CategoryId equals c.Id
                        where pt.LanguageId == request.LanguageId
-                       select new { p,pt,pic};
+                       select new { p,pt};
 
             // Buoc 2 : "Filter"  
             //if(!string.IsNullOrEmpty(request.Keyword))
@@ -146,10 +141,10 @@ namespace eShopSolution.Application.Catalog.Products
                 //query = query.Where(x => request.Keyword.Contains(x.pt.Name));
 
             // kiem tra CategoryId count 
-            if (request.CategoryId != null && request.CategoryId.Count > 0)
-            {
-                query = query.Where(p => request.CategoryId.Contains(p.pic.CategoryId));
-            }
+            //if (request.CategoryId != null && request.CategoryId.Count > 0)
+            //{
+            //    query = query.Where(p => request.CategoryId.Contains(p.pic.CategoryId));
+            //}
 
             // Buoc 3 "Paging"
              int totalRow = await query.CountAsync(); // so trang hien tai search ra bao nhieu
