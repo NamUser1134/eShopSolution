@@ -1,4 +1,5 @@
-﻿using eShopSolution.Application.Catalog.Products;
+﻿using eShopSolution.Application.Catalog.Categories;
+using eShopSolution.Application.Catalog.Products;
 using eShopSolution.Application.Common;
 using eShopSolution.Application.System.Languages;
 using eShopSolution.Application.System.Roles;
@@ -44,6 +45,7 @@ builder.Services.AddTransient<IUserService, UserService>();
 builder.Services.AddTransient<IStorageService, FileStorageService>();
 
 builder.Services.AddTransient<IProductService, ProductService>();
+builder.Services.AddTransient<ICategoryService, CategoryService>();
 builder.Services.AddSwaggerGen( c => 
     {
         c.SwaggerDoc("v1", new OpenApiInfo { Title ="Swapper eShop Solution",Version ="v1"});

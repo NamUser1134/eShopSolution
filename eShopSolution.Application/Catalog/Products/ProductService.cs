@@ -121,37 +121,31 @@ namespace eShopSolution.Application.Catalog.Products
 
         public async Task<PagedResult<ProductVm>> GetAllPaging(GetManageProductPagingRequest request)
         {
-           // linq hoac lamda
+            // linq hoac lamda
 
-            //Buoc 1 " Select join "
-           var query = from p in _context.Products
-                       join pt in _context.ProductTranslations on p.Id equals pt.ProductId
-                       //join pic in _context.ProductInCategories on p.Id equals pic.ProductId 
-                       //join c in _context.Categories on pic.CategoryId equals c.Id
-                       where pt.LanguageId == request.LanguageId
-                       select new { p,pt};
-
-            // Buoc 2 : "Filter"  
-            //if(!string.IsNullOrEmpty(request.Keyword))
-            //{
-            //    query = query.Where(x => x.pt.Name.Contains(request.Keyword));
-            //}
+            //1. Select join
+            var query = from p in _context.Products
+                        join pt in _context.ProductTranslations on p.Id equals pt.ProductId
+                        join pic in _context.ProductInCategories on p.Id equals pic.ProductId
+                        join c in _context.Categories on pic.CategoryId equals c.Id
+                        where pt.LanguageId == request.LanguageId
+                        select new { p, pt, pic };
+            //2. filter
             if (!string.IsNullOrEmpty(request.Keyword))
                 query = query.Where(x => x.pt.Name.Contains(request.Keyword));
-                //query = query.Where(x => request.Keyword.Contains(x.pt.Name));
 
-            // kiem tra CategoryId count 
-            //if (request.CategoryId != null && request.CategoryId.Count > 0)
-            //{
-            //    query = query.Where(p => request.CategoryId.Contains(p.pic.CategoryId));
-            //}
+            if (request.CategoryId != null && request.CategoryId != 0)
+            {
+                query = query.Where(p => p.pic.CategoryId == request.CategoryId);
+            }
 
-            // Buoc 3 "Paging"
-             int totalRow = await query.CountAsync(); // so trang hien tai search ra bao nhieu
+            //3. Paging
+            int totalRow = await query.CountAsync();
+
             var data = await query.Skip((request.PageIndex - 1) * request.PageSize)
                 .Take(request.PageSize)
                 .Select(x => new ProductVm()
-                { 
+                {
                     Id = x.p.Id,
                     Name = x.pt.Name,
                     DateCreated = x.p.DateCreated,
@@ -165,19 +159,17 @@ namespace eShopSolution.Application.Catalog.Products
                     SeoTitle = x.pt.SeoTitle,
                     Stock = x.p.Stock,
                     ViewCount = x.p.ViewCount,
-
                 }).ToListAsync();
 
-            // Buoc 4 "Select and projection"
-            var pageResult = new PagedResult<ProductVm>()
+            //4. Select and projection
+            var pagedResult = new PagedResult<ProductVm>()
             {
                 TotalRecords = totalRow,
                 PageSize = request.PageSize,
                 PageIndex = request.PageIndex,
-                Items = data,
-
+                Items = data
             };
-            return pageResult;
+            return pagedResult;
         }
 
         public async Task<ProductVm> GetById(int productId, string languageId)
