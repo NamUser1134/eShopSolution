@@ -22,6 +22,7 @@ namespace eShopSolution.WebApp.Controllers
         public IActionResult Index()
         {
 			var msg = _loc.GetLocalizedString("Vietnamese");
+
 			return View();
         }
 
