@@ -81,7 +81,7 @@ namespace eShopSolution.Data.Migrations
                         new
                         {
                             Id = new Guid("8d04dce2-969a-435d-bba4-df3f325983dc"),
-                            ConcurrencyStamp = "49249bed-a4af-48a6-a4b7-f183f044a2c6",
+                            ConcurrencyStamp = "72f09118-7969-4d10-ad1a-e29a646aa496",
                             Description = "Administrator role",
                             Name = "admin",
                             NormalizedName = "admin"
@@ -158,7 +158,7 @@ namespace eShopSolution.Data.Migrations
                         {
                             Id = new Guid("69bd714f-9576-45ba-b5b7-f00649be00de"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "5fd3352d-97d2-40e6-a6d9-1ce857bc2038",
+                            ConcurrencyStamp = "9c581247-2a5a-466a-a7f3-e137f16f98cc",
                             Dob = new DateTime(2023, 4, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "namdang3570@gmail.com",
                             EmailConfirmed = true,
@@ -167,7 +167,7 @@ namespace eShopSolution.Data.Migrations
                             LockoutEnabled = false,
                             NormalizedEmail = "namdang3570@gmail.com",
                             NormalizedUserName = "admin",
-                            PasswordHash = "AQAAAAEAACcQAAAAEN3XnRj/tNuUUeBEqCpnTaMfbt/iW0zwEny5b9wnurJnZn/pUu80UxXfce7C/KPg4g==",
+                            PasswordHash = "AQAAAAEAACcQAAAAEKCqe9etnYBlFkPOJYqzaYF4TwCZ+k8W7ZyTIe3Q+eB8xjP2Pa+h3wY4dml+h14AYA==",
                             PhoneNumberConfirmed = false,
                             SecurityStamp = "",
                             TwoFactorEnabled = false,
@@ -511,7 +511,7 @@ namespace eShopSolution.Data.Migrations
                         new
                         {
                             Id = 1,
-                            DateCreated = new DateTime(2023, 4, 7, 1, 54, 9, 608, DateTimeKind.Local).AddTicks(7860),
+                            DateCreated = new DateTime(2023, 4, 11, 1, 21, 59, 893, DateTimeKind.Local).AddTicks(3874),
                             OriginalPrice = 100000m,
                             Price = 200000m,
                             Stock = 0,
